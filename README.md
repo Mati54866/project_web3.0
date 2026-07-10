@@ -1,17 +1,63 @@
-# Krypt - Web 3.0 Blockchain Application
+# Krypt - Web 3.0 Blockchain Application 💎
+
+A modern Web 3.0 application built with Solidity, Ethereum, and React. Send and receive cryptocurrency transactions through the Ethereum blockchain.
+
 ![Krypt](https://i.ibb.co/DVF4tNW/image.png)
 
-### [🌟 Become a top 1% Next.js developer in only one course](https://jsmastery.pro/next15)
-### [🚀 Land your dream programming job in 6 months](https://jsmastery.pro/masterclass)
+## 📋 Table of Contents
 
-## Introduction
-This is a code repository for the corresponding video tutorial.
+1. [Introduction](#introduction)
+2. [Tech Stack](#tech-stack)
+3. [Features](#features)
+4. [Quick Start](#quick-start)
+5. [Project Structure](#project-structure)
+6. [Environment Variables](#environment-variables)
+7. [Author](#author)
 
-Using Web 3.0 methodologies, Solidity and Metamask you'll learn how to build a your first real Web 3.0 Application - from start to finish.
+## <a name="introduction">🤖 Introduction</a>
 
-Project created in collaboration with Enyel Sequeira: 
-Portfolio - https://www.enyelsequeira.com
-E-mail - enyelsequeira1994@gmail.com
-Want me to cover the project you've created? Send me an e-mail 👌
+Krypt is a Web 3.0 blockchain application that allows users to connect their MetaMask wallet and send Ethereum transactions. Built with Solidity smart contracts, it demonstrates real-world blockchain development with a modern UI.
 
-## Launch your development career with project-based coaching - https://www.jsmastery.pro
+## <a name="tech-stack">⚙️ Tech Stack</a>
+
+- **React.js** - Frontend library
+- **Solidity** - Smart contract language
+- **Ethereum** - Blockchain network
+- **MetaMask** - Web3 wallet
+- **Ethers.js** - Web3 library
+- **Tailwind CSS** - Styling
+- **Hardhat** - Development environment
+
+## <a name="features">🔋 Features</a>
+
+👉 **Connect Wallet** - Connect MetaMask wallet to the application
+
+👉 **Send Ethereum** - Transfer ETH to any address on the blockchain
+
+👉 **Transaction History** - View all your past transactions
+
+👉 **Real-time Updates** - Live blockchain data integration
+
+👉 **Secure & Decentralized** - Powered by Ethereum blockchain
+
+👉 **Responsive Design** - Optimized for all devices
+
+## <a name="quick-start">🤸 Quick Start</a>
+
+Follow these steps to set up the project locally on your machine.
+
+**Prerequisites**
+
+Make sure you have the following installed:
+
+- [Git](https://git-scm.com/)
+- [Node.js](https://nodejs.org/en)
+- [npm](https://www.npmjs.com/)
+- [MetaMask Extension](https://metamask.io/)
+- [Hardhat](https://hardhat.org/)
+
+**Cloning the Repository**
+
+```bash
+git clone https://github.com/Mati54866/krypt.git
+cd krypt
