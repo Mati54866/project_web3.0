@@ -18,7 +18,7 @@ A modern Web 3.0 application built with Solidity, Ethereum, and React. Send and 
 
 Krypt is a Web 3.0 blockchain application that allows users to connect their MetaMask wallet and send Ethereum transactions. Built with Solidity smart contracts, it demonstrates real-world blockchain development with a modern UI.
 
-## <a name="tech-stack">⚙️ Tech Stack</a>
+## <a name="tech-stack">⚙️ Tech Stacks</a>
 
 - **React.js** - Frontend library
 - **Solidity** - Smart contract language
