@@ -2,8 +2,6 @@
 
 pragma solidity ^0.8.0;
 
-import "hardhat/console.sol";
-
 contract Transactions {
     uint256 transactionCount;
 
@@ -20,7 +18,16 @@ contract Transactions {
 
     TransferStruct[] transactions;
 
-    function addToBlockchain(address payable receiver, uint amount, string memory message, string memory keyword) public {
+    function addToBlockchain(
+        address payable receiver,
+        uint amount,
+        string memory message,
+        string memory keyword
+    ) public payable {
+        require(receiver != address(0), "Invalid receiver");
+        require(msg.value == amount, "Payment must match amount");
+
+        receiver.transfer(amount);
         transactionCount += 1;
         transactions.push(TransferStruct(msg.sender, receiver, amount, message, block.timestamp, keyword));
 

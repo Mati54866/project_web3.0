@@ -1,19 +1,69 @@
 const { expect } = require("chai");
 const { ethers } = require("hardhat");
 
-describe("Greeter", function () {
-  it("Should return the new greeting once it's changed", async function () {
-    const Greeter = await ethers.getContractFactory("Greeter");
-    const greeter = await Greeter.deploy("Hello, world!");
-    await greeter.deployed();
+describe("Transactions", function () {
+  let transactions;
+  let sender;
+  let receiver;
 
-    expect(await greeter.greet()).to.equal("Hello, world!");
+  beforeEach(async function () {
+    [sender, receiver] = await ethers.getSigners();
+    const Transactions = await ethers.getContractFactory("Transactions");
+    transactions = await Transactions.deploy();
+    await transactions.deployed();
+  });
 
-    const setGreetingTx = await greeter.setGreeting("Hola, mundo!");
+  it("transfers the exact payment and records the transaction", async function () {
+    const amount = ethers.utils.parseEther("0.25");
+    const receiverBalanceBefore = await receiver.getBalance();
 
-    // wait until the transaction is mined
-    await setGreetingTx.wait();
+    const tx = await transactions
+      .connect(sender)
+      .addToBlockchain(receiver.address, amount, "Thanks", "travel", {
+        value: amount,
+      });
+    const receipt = await tx.wait();
+    const block = await ethers.provider.getBlock(receipt.blockNumber);
 
-    expect(await greeter.greet()).to.equal("Hola, mundo!");
+    await expect(tx)
+      .to.emit(transactions, "Transfer")
+      .withArgs(
+        sender.address,
+        receiver.address,
+        amount,
+        "Thanks",
+        block.timestamp,
+        "travel",
+      );
+
+    expect((await receiver.getBalance()).sub(receiverBalanceBefore)).to.equal(amount);
+    expect(await transactions.getTransactionCount()).to.equal(1);
+
+    const [record] = await transactions.getAllTransactions();
+    expect(record.sender).to.equal(sender.address);
+    expect(record.receiver).to.equal(receiver.address);
+    expect(record.amount).to.equal(amount);
+    expect(record.message).to.equal("Thanks");
+    expect(record.keyword).to.equal("travel");
+  });
+
+  it("rejects a payment that does not match the recorded amount", async function () {
+    const amount = ethers.utils.parseEther("0.25");
+
+    await expect(
+      transactions
+        .connect(sender)
+        .addToBlockchain(receiver.address, amount, "", "", {
+          value: ethers.utils.parseEther("0.1"),
+        }),
+    ).to.be.revertedWith("Payment must match amount");
+  });
+
+  it("rejects the zero address as a receiver", async function () {
+    await expect(
+      transactions
+        .connect(sender)
+        .addToBlockchain(ethers.constants.AddressZero, 0, "", "", { value: 0 }),
+    ).to.be.revertedWith("Invalid receiver");
   });
 });

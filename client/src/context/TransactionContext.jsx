@@ -105,38 +105,37 @@ export const TransactionsProvider = ({ children }) => {
     try {
       if (ethereum) {
         const { addressTo, amount, keyword, message } = formData;
+        if (!ethers.utils.isAddress(addressTo)) {
+          throw new Error("Enter a valid Ethereum receiver address.");
+        }
+
         const transactionsContract = createEthereumContract();
         const parsedAmount = ethers.utils.parseEther(amount);
-
-        await ethereum.request({
-          method: "eth_sendTransaction",
-          params: [{
-            from: currentAccount,
-            to: addressTo,
-            gas: "0x5208",
-            value: parsedAmount._hex,
-          }],
-        });
-
-        const transactionHash = await transactionsContract.addToBlockchain(addressTo, parsedAmount, message, keyword);
+        if (parsedAmount.lte(0)) {
+          throw new Error("Enter an amount greater than zero.");
+        }
 
         setIsLoading(true);
-        console.log(`Loading - ${transactionHash.hash}`);
-        await transactionHash.wait();
-        console.log(`Success - ${transactionHash.hash}`);
-        setIsLoading(false);
+        const transaction = await transactionsContract.addToBlockchain(
+          addressTo,
+          parsedAmount,
+          message,
+          keyword,
+          { value: parsedAmount },
+        );
+        await transaction.wait();
 
         const transactionsCount = await transactionsContract.getTransactionCount();
-
         setTransactionCount(transactionsCount.toNumber());
-        window.location.reload();
+        await getAllTransactions();
       } else {
-        console.log("No ethereum object");
+        throw new Error("Please install MetaMask to send a transaction.");
       }
     } catch (error) {
       console.log(error);
-
-      throw new Error("No ethereum object");
+      throw error;
+    } finally {
+      setIsLoading(false);
     }
   };
 
